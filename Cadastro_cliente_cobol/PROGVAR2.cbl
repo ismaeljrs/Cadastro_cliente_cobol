@@ -15,7 +15,8 @@
        DATA DIVISION.
        FILE SECTION.
        WORKING-STORAGE SECTION.
-       77 WRK-CONT              PIC 9(10).
+       77 WRK-CONT-ERRO-LOG              PIC 9(10).
+       77 WRK-CONT-ERRO-CAD              PIC 9(10).
        77 WRK-ENTER             PIC X(01).
        77 WRK-OPC1               PIC 9(01).
        77 WRK-OPC2              PIC 9(01).
@@ -31,16 +32,13 @@
            88 FIM-LOOP VALUE 'S'.
        77 PARA1                 PIC X VALUE 'N'.
            88 FIM-LOOP1 VALUE 'S'.
-
-      ** LOOPS CADASTO DO CLIENTE 
-       77 WRK-CAD-CLI-LOOP1    PIC X VALUE 'N'.
-           88 CAD-CLI-FIM1 VALUE 'S'.
-       77 WRK-CAD-CLI-LOOP2    PIC X VALUE 'N'.
-           88 CAD-CLI-FIM1 VALUE 'S'.
-       77 WRK-CAD-CLI-LOOP3    PIC X VALUE 'N'.
-           88 CAD-CLI-FIM3 VALUE 'S'.
-
-
+       77 PARA2                 PIC X VALUE 'N'.
+           88 FIM-LOOP2 VALUE 'S'.
+       77 PARA3                 PIC X VALUE 'N'.
+           88 FIM-LOOP3 VALUE 'S'.
+       77 PARA4                 PIC X VALUE 'N'.
+           88 FIM-LOOP4 VALUE 'S'.
+           
 
 
 
@@ -411,23 +409,23 @@
                    FOREGROUND-COLOR 0
                    BACKGROUND-COLOR 7.
            10 LINE 20 COLUMN 42 VALUE
-            '1 - sair'
+            '1 - SAIR'
                     FOREGROUND-COLOR 7
                     BACKGROUND-COLOR 4.
            10 LINE 20 COLUMN 50 VALUE
-           '      '
+           '         '
                    FOREGROUND-COLOR 0
                    BACKGROUND-COLOR 7.
-           10 LINE 20 COLUMN 56 VALUE
-            '2 - cadastrar usuario'
+           10 LINE 20 COLUMN 59 VALUE
+            '2 - CRIAR CONTA'
                     FOREGROUND-COLOR 7
                     BACKGROUND-COLOR 6.
-           10 LINE 20 COLUMN 77 VALUE
-           '       '
+           10 LINE 20 COLUMN 74 VALUE
+           '          '
                    FOREGROUND-COLOR 0
                    BACKGROUND-COLOR 7.
            10 LINE 20 COLUMN 84 VALUE
-            '3 - entrar'
+            '3 - ENTRAR'
                     FOREGROUND-COLOR 7
                     BACKGROUND-COLOR 2.
            10 LINE 20 COLUMN 94 VALUE
@@ -950,6 +948,80 @@
                  FOREGROUND-COLOR 0
                  BACKGROUND-COLOR 7.
 
+
+       01 TELA01.
+           05 LINE 3 COLUMN 42 VALUE
+           'BEM-VENDO DE VOLTA, Admin "FULANO"'
+                 FOREGROUND-COLOR 0
+                 BACKGROUND-COLOR 7.
+           
+           05 LINE 5 COLUMN 41 VALUE
+           'Total de Clientes '
+                 FOREGROUND-COLOR 0
+                 BACKGROUND-COLOR 7.
+           05 LINE 6 COLUMN 43 VALUE
+           '┌────────┐'
+                   FOREGROUND-COLOR 0
+                   BACKGROUND-COLOR 7.
+           05 LINE 7 COLUMN 43 VALUE
+           '│  1000  │'
+                   FOREGROUND-COLOR 0
+                   BACKGROUND-COLOR 7.
+           05 LINE 8 COLUMN 43 VALUE
+           '└────────┘'
+                   FOREGROUND-COLOR 0
+                   BACKGROUND-COLOR 7.
+                   
+           05 LINE 5 COLUMN 75 VALUE
+           'Produtos Vendidos '
+                 FOREGROUND-COLOR 0
+                 BACKGROUND-COLOR 7.
+           05 LINE 6 COLUMN 75 VALUE
+           '┌────────┐'
+                   FOREGROUND-COLOR 0
+                   BACKGROUND-COLOR 7.
+           05 LINE 7 COLUMN 75 VALUE
+           '│  1000  │'
+                   FOREGROUND-COLOR 0
+                   BACKGROUND-COLOR 7.
+           05 LINE 8 COLUMN 75 VALUE
+           '└────────┘'
+                   FOREGROUND-COLOR 0
+                   BACKGROUND-COLOR 7.
+             
+           05 LINE 11 COLUMN 51 VALUE
+                 '1 - GERENCIAR CLIENTES '
+                 FOREGROUND-COLOR 0
+                 BACKGROUND-COLOR 7.
+
+           05 LINE 13 COLUMN 51 VALUE
+                 '2 - GERENCIAMENTOS DE PRODUTOS '
+                 FOREGROUND-COLOR 0
+                 BACKGROUND-COLOR 7.
+
+           05 LINE 14 COLUMN 51 VALUE
+                 '3 - GERENCIAR CLIENTES '
+                 FOREGROUND-COLOR 0
+                 BACKGROUND-COLOR 7.
+           05 LINE 15 COLUMN 51 VALUE
+                 '4 - VER HISTORICO DE VENDAS'
+                 FOREGROUND-COLOR 0
+                 BACKGROUND-COLOR 7.
+           05 LINE 16 COLUMN 51 VALUE
+                 '5 - SAIR '
+                 FOREGROUND-COLOR 0
+                 BACKGROUND-COLOR 7.
+
+           05 LINE 20 COLUMN 63 VALUE
+           'OPCAO ___'
+                 FOREGROUND-COLOR 0
+                 BACKGROUND-COLOR 7.         
+           05 LINE 20 COLUMN 70 USING WRK-OPC1
+                   FOREGROUND-COLOR 0
+                   BACKGROUND-COLOR 7.
+           
+           
+
       *01 INF-ERRO-CADAST3.
       *    05 EMAIL1
       *        10 LINE 13 COLUMN 40 VALUE
@@ -960,27 +1032,27 @@
 
        PROCEDURE DIVISION.
            0001-PRINCIPAL                                      SECTION.
-               PERFORM 1000-LOGUIN.
+               PERFORM 1000-MENU-PRINCIPAL.
                PERFORM 10000-FINALIZAR.
-           1000-LOGUIN.
-             MOVE 0 TO WRK-CONT
+           1000-MENU-PRINCIPAL.
+             MOVE 0 TO WRK-CONT-ERRO-LOG
              PERFORM UNTIL FIM-LOOP
-               MOVE 0 TO WRK-CONT
+               MOVE 0 TO WRK-CONT-ERRO-LOG
                ACCEPT LIMPA-TELA
       *** TELA LOGUIN]
                DISPLAY LINHA-TELA
                ACCEPT LOGUIN
                IF WRK-OPC1 = 3
                   IF LOG-EMAIL = ' '
-                   DISPLAY LOG-ERRO-EMAIL
-                   ADD 1 TO WRK-CONT
+                     DISPLAY LOG-ERRO-EMAIL
+                     ADD 1 TO WRK-CONT-ERRO-LOG
                   END-IF
                    IF LOG-SENHA  = ' '
-                   DISPLAY LOG-ERRO-SENHA
-                   ADD 1 TO WRK-CONT
+                      DISPLAY LOG-ERRO-SENHA
+                      ADD 1 TO WRK-CONT-ERRO-LOG
                    END-IF
                END-IF
-               IF WRK-CONT = 0
+               IF WRK-CONT-ERRO-LOG = 0
                    EVALUATE WRK-OPC1
                    WHEN 1
                      PERFORM 10000-FINALIZAR
@@ -1002,41 +1074,58 @@
            2000-CADASTRO-CLIENTE.
       *** TELA CADASTRO CLIENTE DADOS PESSOAS
              PERFORM UNTIL FIM-LOOP1
+               MOVE 0 TO WRK-CONT-ERRO-CAD
                ACCEPT LIMPA-TELA
                DISPLAY PRENCHIMENTO-LINHA
                DISPLAY LINHA-TELA
                ACCEPT CADASTRO-CLIENTE1
+      ** Validar nome 
                IF CAD-NOME = ' '
                    DISPLAY CAD-ERRO-NOME2
+                   ADD 1 TO WRK-CONT-ERRO-CAD
                END-IF
                IF WRK-OPC2 = 1
-                   PERFORM 10000-FINALIZAR
+                   PERFORM 1000-MENU-PRINCIPAL
                          SET FIM-LOOP1 TO TRUE
+               ELSE IF WRK-OPC2 = 2
+                   IF WRK-CONT-ERRO-CAD = 0
+                       SET FIM-LOOP1 TO TRUE
+                   ELSE 
+                      ACCEPT WRK-ENTER
+                   END-IF
                END-IF
-               
-      *        IF WRK-OPC2 <> 1 OR WRK-OPC2 <> 2
-      *            WRK-ENTER
-      *        END-IF
-      *** TELA CADASTRO CLIENTE ENDERECO
-                ACCEPT LIMPA-TELA
-                DISPLAY PRENCHIMENTO-LINHA
-                DISPLAY LINHA-TELA
-                ACCEPT CADASTRO-CLIENTE2
-                ACCEPT WRK-ENTER
-
+             END-PERFORM.
+      *teste
+             PERFORM UNTIL FIM-LOOP2 
+      ***   TELA CADASTRO CLIENTE ENDERECO
+                  ACCEPT LIMPA-TELA
+                  DISPLAY PRENCHIMENTO-LINHA
+                  DISPLAY LINHA-TELA
+                  ACCEPT CADASTRO-CLIENTE2
+                  ACCEPT WRK-ENTER
+                  IF WRK-OPC3 = 2
+                     SET FIM-LOOP2 TO TRUE
+                  END-IF
+              END-PERFORM.
       *** TELA CADASTRO CLIENTE ACESSO AO SISTEMA
-                ACCEPT LIMPA-TELA
-                DISPLAY PRENCHIMENTO-LINHA
-                DISPLAY LINHA-TELA
-                ACCEPT CADASTRO-CLIENTE3
-                ACCEPT WRK-ENTER
+             PERFORM UNTIL FIM-LOOP3
+                 ACCEPT LIMPA-TELA
+                 DISPLAY PRENCHIMENTO-LINHA
+                 DISPLAY LINHA-TELA
+                 ACCEPT CADASTRO-CLIENTE3
+                 ACCEPT WRK-ENTER
+                 IF WRK-OPC2 = 2 
+                     PERFORM 1000-MENU-PRINCIPAL      
+                     SET FIM-LOOP2 TO TRUE
+                  END-IF
              END-PERFORM.
       *** ENTRANDO NO ENTRAR
            3000-ENTROU-PAG.
              ACCEPT LIMPA-TELA.
              DISPLAY LINHA-TELA.
+             DISPLAY TELA01.
              ACCEPT WRK-ENTER.
-
+             
       *** ENTRANDO NO SISTEMA
            10000-FINALIZAR.
                STOP RUN.
